@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class MyGLUtil {
     public static final String ES_ERROR_TAG = "ES30_ERROR";
@@ -82,12 +83,21 @@ public class MyGLUtil {
         }
     }
 
-    public static FloatBuffer allocFloatBuffer(int length, float[] vertices) {
-        ByteBuffer buf = ByteBuffer.allocateDirect(length);
+    public static FloatBuffer allocFloatBuffer(float[] vertices) {
+        ByteBuffer buf = ByteBuffer.allocateDirect(vertices.length * 4);
         buf.order(ByteOrder.nativeOrder());
         FloatBuffer fb = buf.asFloatBuffer();
         fb.put(vertices);
         fb.position(0);
         return fb;
+    }
+
+    public static IntBuffer allocIntBuffer(int[] indices) {
+        ByteBuffer buf = ByteBuffer.allocateDirect(indices.length * 4);
+        buf.order(ByteOrder.nativeOrder());
+        IntBuffer ib = buf.asIntBuffer();
+        ib.put(indices);
+        ib.position(0);
+        return ib;
     }
 }

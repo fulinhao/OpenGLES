@@ -1,11 +1,9 @@
-package com.lorenfu.opengl.activity;
+package com.lorenfu.opengl.rotate_triangle;
 
 import android.content.Context;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-
-import com.lorenfu.opengl.globj.Triangle;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -34,6 +32,7 @@ public class MyGLView extends GLSurfaceView {
 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
+            GLES30.glViewport(0, 0, width, height);
             float ratio = (float) width / height;
             Matrix.frustumM(triangle.mProjMatrix, 0, -ratio, ratio, -1, 1, 1, 10);
             Matrix.setLookAtM(triangle.mCameraMatrix, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0);

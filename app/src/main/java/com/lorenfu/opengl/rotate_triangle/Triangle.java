@@ -1,9 +1,8 @@
-package com.lorenfu.opengl.globj;
+package com.lorenfu.opengl.rotate_triangle;
 
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 
-import com.lorenfu.opengl.activity.MyGLView;
 import com.lorenfu.opengl.util.MyGLUtil;
 
 import java.nio.FloatBuffer;
@@ -45,17 +44,17 @@ public class Triangle {
     }
 
     private void initVertexData() {
-        mVertexBuffer = MyGLUtil.allocFloatBuffer(vertices.length * 4, vertices);
-        mColorBuffer = MyGLUtil.allocFloatBuffer(colors.length * 4, colors);
+        mVertexBuffer = MyGLUtil.allocFloatBuffer(vertices);
+        mColorBuffer = MyGLUtil.allocFloatBuffer(colors);
     }
 
     private void initShader(MyGLView glView) {
-        String vertexShader = MyGLUtil.loadShaderFromAssets("", glView.getResources());
-        String fragmentShader = MyGLUtil.loadShaderFromAssets("", glView.getResources());
+        String vertexShader = MyGLUtil.loadShaderFromAssets("vertex.glsl", glView.getResources());
+        String fragmentShader = MyGLUtil.loadShaderFromAssets("fragment.glsl", glView.getResources());
         mProgram = MyGLUtil.createProgram(vertexShader, fragmentShader);
         mPositionHandle = GLES30.glGetAttribLocation(mProgram, "aPosition");
         mColorHandle = GLES30.glGetAttribLocation(mProgram, "aColor");
-        mMVPMatrixHandle = GLES30.glGetAttribLocation(mProgram, "uMVPMatrix");
+        mMVPMatrixHandle = GLES30.glGetUniformLocation(mProgram, "uMVPMatrix");
     }
 
     public void drawSelf() {
@@ -66,7 +65,7 @@ public class Triangle {
         //将变换矩阵传入渲染管线
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, getFinalMatrix(mObjMatrix), 0);
         GLES30.glVertexAttribPointer(mPositionHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, mVertexBuffer);
-        GLES30.glVertexAttribPointer(mColorHandle, 4, GLES30.GL_FLOAT, false, 4 * 4, mVertexBuffer);
+        GLES30.glVertexAttribPointer(mColorHandle, 4, GLES30.GL_FLOAT, false, 4 * 4, mColorBuffer);
         GLES30.glEnableVertexAttribArray(mPositionHandle);
         GLES30.glEnableVertexAttribArray(mColorHandle);
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3);
